@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tutorial.Data.Documents
+namespace Tutorial.Data
 {
     public class UserDocument
     {

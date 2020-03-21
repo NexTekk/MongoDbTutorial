@@ -2,9 +2,7 @@
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tutorial.Core.Users;
 using Tutorial.Data;
-using Tutorial.Data.Documents;
 
 namespace MongoDbTutorials
 {

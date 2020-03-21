@@ -2,22 +2,24 @@
 using System.Security.Authentication;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Tutorial.Data.Documents;
 
 namespace Tutorial.Data
 {
     public class DbContext
     {
-        private readonly Lazy<IMongoDatabase> _database;
-        private readonly IDbSettings _appSettings;
+        private const string UsersCollectionName = "users";
 
-        public DbContext(IDbSettings appSettings)
+        private readonly Lazy<IMongoDatabase> _database;
+        private readonly IDbSettings _dbSettings;
+
+        public DbContext(IDbSettings dbSettings)
         {
-            _appSettings = appSettings;
+            _dbSettings = dbSettings;
             _database = new Lazy<IMongoDatabase>(GetDatabase, true);
         }
 
-        public IMongoCollection<UserDocument> Users => GetCollection<UserDocument>("users");
+        public IMongoCollection<UserDocument> Users 
+            => GetCollection<UserDocument>(UsersCollectionName);
 
         private IMongoCollection<T> GetCollection<T>(string collectionName)
         {
@@ -31,7 +33,7 @@ namespace Tutorial.Data
 
         private IMongoDatabase GetDatabase()
         {
-            var connectionUrl = new MongoUrl(_appSettings.DbServer);
+            var connectionUrl = new MongoUrl(_dbSettings.DbServer);
             var settings = MongoClientSettings.FromUrl(connectionUrl);
 
             settings.SslSettings = new SslSettings
@@ -41,7 +43,7 @@ namespace Tutorial.Data
 
             var client = new MongoClient(settings);
 
-            return client.GetDatabase(_appSettings.DbName);
+            return client.GetDatabase(_dbSettings.DbName);
         }
     }
 }

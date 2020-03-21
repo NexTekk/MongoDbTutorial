@@ -9,12 +9,4 @@
     <PackageReference Include="MongoDB.Driver" Version="2.10.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Documents\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Tutorial.Core\Tutorial.Core.csproj" />
-  </ItemGroup>
-
 </Project>

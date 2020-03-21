@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using Tutorial.Core.Users;
-using Tutorial.Data.Documents;
 
 namespace Tutorial.Data
 {
@@ -60,6 +58,16 @@ namespace Tutorial.Data
             return await cursor.ToListAsync();
         }
 
+        public void Upsert(UserDocument document)
+        {
+            var options = new FindOneAndReplaceOptions<UserDocument, UserDocument>
+            {
+                IsUpsert = true
+            };
+
+            _dbContext.Users.FindOneAndReplace<UserDocument>(d => d.Id == document.Id, document, options);
+        }
+
         public async Task UpsertAsync(UserDocument document)
         {
             var options = new FindOneAndReplaceOptions<UserDocument, UserDocument>
@@ -68,6 +76,16 @@ namespace Tutorial.Data
             };
 
             await _dbContext.Users.FindOneAndReplaceAsync<UserDocument>(d => d.Id == document.Id, document, options);
+        }
+
+        public void Delete(Guid userId)
+        {
+            _dbContext.Users.DeleteOne(u => u.Id == userId);
+        }
+
+        public async Task DeleteAsync(Guid userId)
+        {
+            await _dbContext.Users.DeleteOneAsync(u => u.Id == userId);
         }
     }
 }
